@@ -13,6 +13,10 @@ usage() {
 
 while test -n "$1"; do
     case "$1" in
+    --sc)
+        SCOPES=$2
+        shift 2
+        ;;
     --ci)
         CLIENT_ID=$2
         shift 2
@@ -33,6 +37,7 @@ while test -n "$1"; do
 done
 
 [ -z "$CLIENT_ID" ] && usage && echo "--ci is required" && exit 1
+[ -z "$SCOPES" ] && usage && echo "--sc is required" && exit 1
 [ -z "$CLIENT_SECRET" ] && usage && echo "--cs is required" && exit 1
 [ -z "$ISSUER" ] && usage && echo "--is is required" && exit 1
 
@@ -40,4 +45,6 @@ mvn spring-boot:run \
     -Dokta.oauth2.clientId=$CLIENT_ID \
     -Dokta.oauth2.clientSecret=$CLIENT_SECRET \
     -Dokta.oauth2.issuer=$ISSUER \
-    -Dserver.port=$PORT
+    -Dokta.oauth2.scope-$SCOPES \
+    -Dserver.port=$PORT \
+    -Dspring.security.oauth2.resource.server=http://localhost:8082
