@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.okta.examples.sso</groupId>
-	<artifactId>demo</artifactId>
+	<artifactId>oauth2-client</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>SingleSignOn</name>
+	<name>oauth2-client</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
@@ -32,10 +32,6 @@
 			<artifactId>okta-spring-boot-starter</artifactId>
 			<version>1.2.1</version>
 		</dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-oauth2-client</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
