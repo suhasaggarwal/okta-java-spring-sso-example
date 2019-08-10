@@ -45,6 +45,6 @@ mvn spring-boot:run \
     -Dokta.oauth2.clientId=$CLIENT_ID \
     -Dokta.oauth2.clientSecret=$CLIENT_SECRET \
     -Dokta.oauth2.issuer=$ISSUER \
-    -Dokta.oauth2.scope-$SCOPES \
+    -Dokta.oauth2.scopes=$SCOPES \
     -Dserver.port=$PORT \
-    -Dspring.security.oauth2.resource.server=http://localhost:8082
+    -Dokta.oauth2.resource.server=http://localhost:8082

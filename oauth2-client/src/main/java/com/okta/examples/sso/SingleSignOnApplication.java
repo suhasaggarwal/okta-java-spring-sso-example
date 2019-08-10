@@ -1,6 +1,6 @@
 package com.okta.examples.sso;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -34,32 +34,35 @@ public class SingleSignOnApplication {
         this.webClient = webClient;
     }
 
-    @SuppressWarnings("unchecked")
     @GetMapping("/")
     public ModelAndView home(@AuthenticationPrincipal OidcUser user) {
         ModelAndView mav = new ModelAndView();
         mav.addObject("user", user.getUserInfo());
-
+        Map<String,String> userBasicProfile = new HashMap<String,String>();
+        userBasicProfile.put("First Name",user.getGivenName());
+        userBasicProfile.put("Middle Initial",user.getMiddleName());
+        userBasicProfile.put("Last Name",user.getFamilyName());
+        userBasicProfile.put("Nick Name",user.getNickName());       
+        userBasicProfile.put("Birthday",user.getBirthdate());
+        userBasicProfile.put("Gender",user.getGender());
         String welcomeMessage = this.webClient.get().uri(this.resourceServerUrl + "/welecomeMessage").retrieve()
                 .bodyToMono(String.class).block();
-
-        Map<String, String> profile = this.webClient.get().uri(this.resourceServerUrl + "/userProfile").retrieve()
-                .bodyToMono(Map.class).block();
-
+        mav.addObject("welcomeMessage",welcomeMessage);
+        
         try {
-            List<String> emails = this.webClient.get().uri(this.resourceServerUrl + "/userEmails").retrieve()
-                    .bodyToMono(List.class).block();
+            String email = this.webClient.get().uri(this.resourceServerUrl + "/userEmail").retrieve()
+                    .bodyToMono(String.class).block();
 
-            if (emails != null) {
-                for (int i = 1; i <= emails.size(); i++) {
-                    profile.put("Email " + i, emails.get(i - 1));
-                }
+            if (email != null) {
+                userBasicProfile.put("Email", email);
+                
             }
         } catch (Exception e) {
             mav.addObject("emailError", true);
         }
 
-        mav.addObject("profile", profile);
+        mav.addObject("profile", userBasicProfile);
+        
         mav.setViewName("home");
         return mav;
     }

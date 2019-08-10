@@ -18,7 +18,7 @@
                     <div th:if="${user.claims.containsKey('name')}"
                         class="alert alert-primary text-center" role="alert"
                     >
-                        <h3 th:inline="text">Welcome [[${user.claims.name}]]!</h3>
+                        <h3 th:inline="text">[[${welcomeMessage}]]!</h3>
                     </div>
                     <div th:if="${emailError}"
                         class="alert alert-primary text-center" role="alert"
