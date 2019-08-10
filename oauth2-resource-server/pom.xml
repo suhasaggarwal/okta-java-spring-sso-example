@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.okta</groupId>
-    <artifactId>okta-spring-security-roles-example</artifactId>
+    <artifactId>oauth2-resource-server</artifactId>
     <version>0.0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>okta-spring-security-roles-example</name>
+    <name>oauth2-resource-server</name>
     <description>Demo project for Spring Boot</description>
 
     <parent>

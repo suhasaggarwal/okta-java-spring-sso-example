@@ -23,7 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class SingleSignOnApplication {
 
     private WebClient webClient;
-    @Value("#{ @environment['spring.security.oauth2.resource.server'] }")
+    @Value("#{ @environment['okta.oauth2.resource.server'] }")
     private String resourceServerUrl;
 
     public static void main(String[] args) {
@@ -34,6 +34,7 @@ public class SingleSignOnApplication {
         this.webClient = webClient;
     }
 
+    @SuppressWarnings("unchecked")
     @GetMapping("/")
     public ModelAndView home(@AuthenticationPrincipal OidcUser user) {
         ModelAndView mav = new ModelAndView();
