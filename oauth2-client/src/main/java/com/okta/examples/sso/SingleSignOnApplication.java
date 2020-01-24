@@ -23,7 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class SingleSignOnApplication {
 
     private WebClient webClient;
-    @Value("#{ @environment['okta.oauth2.resource.server'] }")
+    @Value("#{ @environment['resourceServer.url'] }")
     private String resourceServerUrl;
 
     public static void main(String[] args) {
