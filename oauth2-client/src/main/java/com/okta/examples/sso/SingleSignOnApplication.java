@@ -42,9 +42,7 @@ public class SingleSignOnApplication {
         userBasicProfile.put("First Name",user.getGivenName());
         userBasicProfile.put("Middle Initial",user.getMiddleName());
         userBasicProfile.put("Last Name",user.getFamilyName());
-        userBasicProfile.put("Nick Name",user.getNickName());       
-        userBasicProfile.put("Birthday",user.getBirthdate());
-        userBasicProfile.put("Gender",user.getGender());
+        userBasicProfile.put("Nick Name",user.getNickName());
         String welcomeMessage = this.webClient.get().uri(this.resourceServerUrl + "/welecomeMessage").retrieve()
                 .bodyToMono(String.class).block();
         mav.addObject("welcomeMessage",welcomeMessage);
