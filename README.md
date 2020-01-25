@@ -41,7 +41,7 @@ Log in to your Okta Developer account (or [sign up](https://developer.okta.com/s
 
 #### Resource Server Configuration
 
-Open `oauth2-resource-server/src/main/application.properties` and set the `issuer`, `clientSecret`, and `clientId` values.
+Open `oauth2-resource-server/src/main/application.properties` and REPLACE the contents with the values below. Set the `issuer`, `clientSecret`, and `clientId` values.
 
 You can find your Issuer URI by going to **API**->**Authorization Servers** and looking next to the `default` server in the table.
 
