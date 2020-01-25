@@ -31,7 +31,7 @@ cd java-single-sign-on
 
 This will get a copy of the project installed locally. Before the projects apps will run, however, you need to create an OIDC application in Okta and configure the client and server to use it.
 
-Note: the linked tutorial demonstrates how to configure two instances of a client application and a resource server running on a custom Okta authorization server. If you would like to see how that is accomplished, please refer to the tutorial. In this README, the instructions demonstrate how to get a single client and the resource server running using the default Okta authorization server. 
+Note: the tutorial linked to at the top of the README demonstrates how to configure two instances of a client application and a resource server running on a custom Okta authorization server. If you would like to see how that is accomplished, please refer to the tutorial. In this README, the instructions demonstrate how to get a single client and the resource server running using the default Okta authorization server. 
 
 ### Create an OIDC Server Application in Okta
 
@@ -49,7 +49,7 @@ You can find your Issuer URI by going to **API**->**Authorization Servers** and 
 okta.oauth2.issuer={yourIssuerUri}
 okta.oauth2.clientId={yourClientID}
 okta.oauth2.clientSecret={yourClientSecret}
-okta.oauth2.audience=api://oidcauthserver
+okta.oauth2.audience=api://default
 server.port=8082
 ```
 
@@ -78,23 +78,24 @@ resourceServer.url=http://localhost:8082
 
 To install all of its dependencies and start each app, follow the instructions below.
 
-To run the server, run:
+To run the server, from a shell, open the `oauth2-resource-server` directory and run:
  
 ```bash
-./gradlew bootRun
+./mvnw spring-boot:run
 ```
 
-To run the client, cd into the `app` folder and run:
+To run the client, from a different shell, open the `oauth2-client` directory and run:
  
 ```bash
-yarn && yarn start
+./mvnw spring-boot:run
 ```
+
+You can now test the client application by opening http://localhost:8080
 
 ## Links
 
 This example uses the following open source libraries:
 
-* [React](https://reactjs.org/)
 * [Spring Boot](https://spring.io/projects/spring-boot)
 * [Spring Security](https://spring.io/projects/spring-security)
 
