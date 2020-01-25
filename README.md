@@ -53,6 +53,8 @@ okta.oauth2.audience=api://default
 server.port=8082
 ```
 
+Notice that here the audience is `api://default` instead of `api://oidcauthserver` that is used for the custom authorization server in the tutorial.
+
 ### Create an OIDC Web Client Application in Okta
 
 You will need to [create another OIDC Application in Okta](http://need.a.link) to get your values to perform authentication. 
