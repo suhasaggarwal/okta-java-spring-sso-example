@@ -10,8 +10,6 @@ Please read [Build a Single Sign-on Application in Java](https://<need.a.link>) 
 
 **Java 11**: This project uses Java 11. If you don't have Java 11, you can install OpenJDK. Instructions are found on the [OpenJDK website](https://openjdk.java.net/install/).
 
-**Yarn**: Yarn is a javascript package manager. You'll use it for the React UI application. To install Yarn, head to [their website for instructions](https://yarnpkg.com/lang/en/docs/install/#mac-stable).
-
 **Okta Developer Account**: You'll be using Okta as an OAuth/OIDC provider to add JWT authentication and authorization to the application. Go to [their website](https://developer.okta.com/signup/) and sign up for one of their free developer accounts, if you haven't already.
 
 > [Okta](https://developer.okta.com/) has Authentication and User Management APIs that reduce development time with instant-on, scalable user infrastructure. Okta's intuitive API and expert support make it easy for developers to authenticate, manage, and secure users and roles in any application.
@@ -27,52 +25,53 @@ Please read [Build a Single Sign-on Application in Java](https://<need.a.link>) 
 To install this example application, run the following commands:
 
 ```bash
-git clone https://<need.a.link> kotlin-react-app
-cd kotlin-react-app
+git clone https://<need.a.link> java-single-sign-on
+cd java-single-sign-on
 ```
 
 This will get a copy of the project installed locally. Before the projects apps will run, however, you need to create an OIDC application in Okta and configure the client and server to use it.
 
-### Create an OIDC Application in Okta
+Note: the linked tutorial demonstrates how to configure two instances of a client application and a resource server running on a custom Okta authorization server. If you would like to see how that is accomplished, please refer to the tutorial. In this README, the instructions demonstrate how to get a single client and the resource server running using the default Okta authorization server. 
 
-You will need to [create an OIDC Application in Okta]() to get your values to perform authentication. 
+### Create an OIDC Server Application in Okta
 
-Log in to your Okta Developer account (or [sign up](https://developer.okta.com/signup/) if you don’t have an account) and navigate to **Applications** > **Add Application**. Click **Single-Page App**, click **Next**, and give the app a name you’ll remember. Specify `http://localhost:3000/implicit/callback` as a **Login Redirect URI**. Specify `http://localhost:3000` as a **Base URI**. Click **Done**. 
+You will need to [create an OIDC Application in Okta](http://need.a.link) to get your values to perform authentication. 
 
-#### Server Configuration
+Log in to your Okta Developer account (or [sign up](https://developer.okta.com/signup/) if you don’t have an account) and navigate to **Applications** > **Add Application**. Click **Service**, click **Next**, and give the app a name you’ll remember. You'll need the Client ID and Client Secret for the resource server below.
 
-Set the `issuer` and copy the `clientId` into `src/main/resources/application.properties`. 
+#### Resource Server Configuration
 
-**NOTE:** The value of `{yourOktaUrl}` should be something like `dev-123456.com`. Make sure you don't include `-admin` in the value!
+Open `oauth2-resource-server/src/main/application.properties` and set the `issuer`, `clientSecret`, and `clientId` values.
+
+You can find your Issuer URI by going to **API**->**Authorization Servers** and looking next to the `default` server in the table.
 
 ```properties
-okta.oauth2.issuer=https://{yourOktaUrl}/oauth2/default  
-okta.oauth2.clientId={yourClientId}
+okta.oauth2.issuer={yourIssuerUri}
+okta.oauth2.clientId={yourClientID}
+okta.oauth2.clientSecret={yourClientSecret}
+okta.oauth2.audience=api://oidcauthserver
+server.port=8082
 ```
+
+### Create an OIDC Web Client Application in Okta
+
+You will need to [create another OIDC Application in Okta](http://need.a.link) to get your values to perform authentication. 
+
+Log in to your Okta Developer account and navigate to **Applications** > **Add Application**. Click **Single-Page App**, click **Next**, and give the app a name you’ll remember. Specify `http://localhost:8080/login/oauth2/code/okta` as a **Login Redirect URI**. Specify `http://localhost:8080` as a **Base URI**. Click **Done**. 
+
+You'll use the ClientID and Client Secret below to configure the client application.
 
 #### Client Configuration
 
-The React client also needs to be configured with the Okta OAuth properties. Open the `src.App.js` file and look in the `App` component, toward the bottom of the module. You need to fill in your Client ID and Issuer URL in the properties of the Security component.
+Open `oauth2-client/src/main/application.properties` and REPLACE the contents with the contents below. Set the `issuer`, `clientSecret`, and `clientId` values.
 
-```jsx
-class App extends Component {
-
-    render() {
-
-        return (
-            <Router>
-                <Security issuer='https://{yourOktaUrl}/oauth2/default'
-                          clientId='{yourCliendId}'
-                          redirectUri={window.location.origin + '/implicit/callback'}
-                          pkce={true}
-                >
-                    <Route path='/implicit/callback' component={ImplicitCallback} />
-                    <AuthWrapper />
-                </Security>
-            </Router>
-        )
-    }
-}
+```properties
+okta.oauth2.issuer={yourIssuerUri}
+okta.oauth2.clientId={yourClientID}
+okta.oauth2.clientSecret={yourClientSecret}
+okta.oauth2.scopes=openid,profile
+server.port=8080
+resourceServer.url=http://localhost:8082
 ```
 
 ## Start the Apps
